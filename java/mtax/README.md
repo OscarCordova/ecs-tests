@@ -13,6 +13,6 @@ Extra points:
 
 Notes:
 
-Support class: `X_Tax.java`
+Support class: `XTax.java`
 
 Questions? Ask'em in your PR =)
