@@ -3,15 +3,15 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
-public class X_Tax {
+public class XTax {
     
     private Object id;
     private BigDecimal base;
     private String tax;
     private String typeFactor;
-    private BigDecimal tasaOCuota;
+    private BigDecimal fee;
     private BigDecimal amount;
-    private boolean trasladado;
+    private boolean transferred;
     private boolean local;
     private boolean active;
     private String createdBy;
@@ -20,7 +20,7 @@ public class X_Tax {
     private Date updated;
     private String version;
 
-    public X_Tax() {
+    public XTax() {
     }
 
     public Object getId() {
@@ -55,12 +55,12 @@ public class X_Tax {
         this.typeFactor = typeFactor;
     }
 
-    public BigDecimal getTasaOCuota() {
-        return tasaOCuota;
+    public BigDecimal getFee() {
+        return fee;
     }
 
-    public void setTasaOCuota(BigDecimal tasaOCuota) {
-        this.tasaOCuota = tasaOCuota;
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
     }
 
     public BigDecimal getAmount() {
@@ -71,12 +71,12 @@ public class X_Tax {
         this.amount = amount;
     }
 
-    public boolean isTrasladado() {
-        return trasladado;
+    public boolean isTransferred() {
+        return transferred;
     }
 
-    public void setTrasladado(boolean trasladado) {
-        this.trasladado = trasladado;
+    public void setTransferred(boolean transferred) {
+        this.transferred = transferred;
     }
     
     public boolean isLocal() {
