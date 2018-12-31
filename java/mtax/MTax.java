@@ -8,73 +8,48 @@ public class MTax implements Constant {
         
     }
     
-    public static List<String> validate(List<X_Tax> xTaxList) {
+    public static List<String> validateTaxes(List<XTax> xTaxList) {
         
         List<String> errorList = new ArrayList<>();
-        
-//        List<String> taxCategoryList = MInfoTaxCategory.getTaxCategoryStringList();
-        
-        if(xTaxList != null && xTaxList.size() > 0) {
-            List<String> validIds = new ArrayList<>();
-            int cont = 0;
-            for (X_Tax tax : xTaxList) {
-                if(tax.getId() != null){
-                    validIds.add(tax.getId().toString());
-                }
-//                if(tax.getAmount() == null) {
-//                    errorList.add("El importe es obligatorio");
-//                }
+        List<String> taxCategoryList = MInfoTaxCategory.getTaxCategoryStringList();
 
-                if(tax.getTax() == null) {
-                    errorList.add("El impuesto es obligatorio");
-                }
-//                else if(!taxCategoryList.contains(tax.getTax())) {
-//                    errorList.add("El impuesto no es un dato valido");
-//                }
+        if (xTaxList == null) {
+            errorList.add("The document has not taxes.");
+            return errorList;    
+        }
 
-//                if(tax.isLocal()){
-//                    if(tax.isTrasladado() && tax.getTaxAmount() == null ) {
-//                        errorList.add("El importe es obligatorio");
-//                    }
-//                } 
-//                else {
-//                    if(tax.getTaxAmount() == null ) {
-//                        errorList.add("El importe es obligatorio");
-//                    }
-//                }
-                
-                if(!tax.isLocal()){
-                    cont++;
-                }
+        boolean noLocalTax = false;
+        for (XTax tax : xTaxList) {
+            // Validate if the id exists
+            if (tax.getId() != null) {
+                tax.setCreated(tax.getId().toString().getCreated());
             }
-            if(cont<=0){
-                errorList.add("Debe de incluir al menos una tasa no local");
+            // Validate if the amount is not null
+            if (tax.getAmount() == null) {
+               errorList.add("The amount must be not null.");
             }
-            if(validIds.size() > 0){
-                    
-                    List<X_Tax> xt = TaxsByListId(validIds, false);
-                    if(xt.size() != validIds.size()){
-                        errorList.add("Existen datos no guardados previamente");
-                    }else{
-                        HashMap<String, X_Tax> map_taxs = new HashMap<String, X_Tax>();
-                        for(X_Tax tax: xt){
-                            map_taxs.put(tax.getId().toString(), tax);
-                        }
-                        for(int i = 0; i < xTaxList.size(); i++){
-                            if(xTaxList.get(i).getId() != null){
-                                xTaxList.get(i).setCreated(
-                                        map_taxs.get(xTaxList.get(i).getId().toString())
-                                                .getCreated());
-                            }
-                        }
-                    }
+            // Validate if the thax is not null
+            if (taxObj.getTax() == null) {
+                errorList.add("The tax must be not null.");
+            }
+            // Validate if the tax is a valid record according to the
+            // given tax category list 
+            if (!taxCategoryList.contains(tax)) {
+                errorList.add("The tax is not a valid tax.");
+            }
+            // If the tax is a local tax validate if the tax is not null
+            if (tax.getTaxAmount() == null ) {
+                errorList.add("The tax amount is required.");
+            }
+            // Only set True if the tax is not local and the flag variable is False
+            if (!tax.isLocal() && !noLocalTax){
+                noLocalTax = true;
             }
         }
-//        else {
-//            errorList.add("El documento no tiene tasas");
-//        }
-        
+        // Validate if there any no local tax
+        if (!noLocalTax) {
+            errorList.add("Debe de incluir al menos una tasa no local");
+        }
         return errorList;
     }
-    
 }
