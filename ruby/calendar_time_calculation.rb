@@ -66,4 +66,5 @@ module CalendarTimeCalculation
       end
       results
    end
+
 end
